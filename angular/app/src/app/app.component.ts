@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {BirdImageWikiService} from './services/bird-image-wiki.service';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import {BirdImageWikiService} from './services/bird-image-wiki.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef;
+  @ViewChild('fileDropRef', { static: false }) fileDropEl: ElementRef;
   files: any[] = [];
 
   title = 'app';
@@ -55,16 +56,16 @@ export class AppComponent implements AfterViewInit {
    */
   deleteFile(index: number) {
     if (this.files[index].progress < 100) {
-      console.log("Upload in progress.");
+      console.log('Upload in progress.');
       return;
     }
     this.files.splice(index, 1);
   }
 
   /**
-   * Simulate the upload process
+   * Upload process
    */
-  uploadFilesSimulator(index: number) {
+  uploadFiles(index: number) {
     setTimeout(() => {
       if (index === this.files.length) {
         return;
@@ -72,11 +73,11 @@ export class AppComponent implements AfterViewInit {
         const progressInterval = setInterval(() => {
           if (this.files[index].progress === 100) {
             clearInterval(progressInterval);
-            this.uploadFilesSimulator(index + 1);
+            this.uploadFiles(index + 1);
           } else {
             this.files[index].progress += 5;
           }
-        }, 200);
+        }, 50);
       }
     }, 1000);
   }
@@ -88,10 +89,11 @@ export class AppComponent implements AfterViewInit {
   prepareFilesList(files: Array<any>) {
     for (const item of files) {
       item.progress = 0;
+      item.prediction = false;
       this.files.push(item);
     }
-    this.fileDropEl.nativeElement.value = "";
-    this.uploadFilesSimulator(0);
+    this.fileDropEl.nativeElement.value = '';
+    this.uploadFiles(0);
   }
 
   /**
@@ -101,12 +103,16 @@ export class AppComponent implements AfterViewInit {
    */
   formatBytes(bytes, decimals = 2) {
     if (bytes === 0) {
-      return "0 Bytes";
+      return '0 Bytes';
     }
     const k = 1024;
     const dm = decimals <= 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  soundRecognition(index: number) {
+    this.files[index].prediction = true;
   }
 }

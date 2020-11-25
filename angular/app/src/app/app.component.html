@@ -6,7 +6,7 @@
         <h2>Upload your audio file:</h2>
         <div class="container" appDnd (fileDropped)="onFileDropped($event)">
           <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
-          <img src="assets/images/dnd/ic-upload-file.svg" alt="">
+          <img class="upload-img" src="assets/images/dnd/ic-upload-file.svg" alt="">
           <h3>Drag and drop file here</h3>
           <h3>or</h3>
           <label for="fileDropRef">Browse for file</label>
@@ -16,7 +16,7 @@
       <div class="files-list">
         <div class="single-file" *ngFor="let file of files; let i = index">
           <div class="file-info">
-            <img src="assets/images/dnd/ic-file.svg" width="45px" alt="file">
+            <img class="music" src="assets/images/dnd/music-file.svg" alt="file">
             <div class="info">
               <h4 class="name">
                 {{ file?.name }}
@@ -29,8 +29,8 @@
             <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file" (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
-            <button class="btn-model">Run model</button>
-            <span class="prediction">Prediction</span>
+            <button class="btn-model" (click)="soundRecognition(i)">Run model</button>
+            <span class="prediction" *ngIf="file?.prediction">Generated prediction</span>
           </div>
         </div>
       </div>
