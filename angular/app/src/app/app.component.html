@@ -1,13 +1,49 @@
-<!-- example of displaying a bird image -->
-<div style="display: flex; flex-direction: column; align-items: center;">
-  <p>
-    Example of displaying a bird image
-  </p>
+<div id="main-container">
+  <img id="logo-esilv" src="./assets/images/logo_esilv.png" alt="Logo ESILV">
+  <div id="l-panel">
+    <div>
+      <div class="upload-area">
+        <h2>Upload your audio file:</h2>
+        <div class="container" appDnd (fileDropped)="onFileDropped($event)">
+          <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
+          <img src="assets/images/dnd/ic-upload-file.svg" alt="">
+          <h3>Drag and drop file here</h3>
+          <h3>or</h3>
+          <label for="fileDropRef">Browse for file</label>
+        </div>
+      </div>
 
-  <!-- image -->
-  <img [src]="imageUrl" alt="bird image" style="max-height: 1000px; max-width: 500px">
-
-  <!-- url de l'image -->
-  {{imageUrl}}
+      <div class="files-list">
+        <div class="single-file" *ngFor="let file of files; let i = index">
+          <div class="file-info">
+            <img src="assets/images/dnd/ic-file.svg" width="45px" alt="file">
+            <div class="info">
+              <h4 class="name">
+                {{ file?.name }}
+              </h4>
+              <p class="size">
+                {{ formatBytes(file?.size) }}
+              </p>
+              <app-progress [progress]="file?.progress"></app-progress>
+            </div>
+            <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file" (click)="deleteFile(i)">
+          </div>
+          <div class="recognition-module" *ngIf="file?.progress == 100">
+            <button class="btn-model">Run model</button>
+            <span class="prediction">Prediction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="r-panel">
+    <div>
+      <h1>Bruit Paris</h1>
+    </div>
+    <div>
+      <p>This is a machine learning service dedicated to recognize sounds and tell you what it is based on an audio file.</p>
+    </div>
+  </div>
 </div>
+
 <router-outlet></router-outlet>
