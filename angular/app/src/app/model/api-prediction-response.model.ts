@@ -1,12 +1,15 @@
-/* Response class for the prediction API */
+/**
+ * Response class for the prediction API
+ */
 export interface IApiPredictionResponse {
-        specie: string;
-        rate: number;
+  object: string;
+  rate: number;
 }
 
 export class ApiPredictionResponse implements IApiPredictionResponse {
-    constructor(
-        public specie: string,
-        public rate: number
-    ) {}
+  constructor(
+    public object: string,
+    public rate: number
+  ) {
+  }
 }
