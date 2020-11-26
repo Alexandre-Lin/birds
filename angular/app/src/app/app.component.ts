@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {BirdImageWikiService} from './services/bird-image-wiki.service';
+import {ImageWikiService} from './services/image-wiki.service';
 import * as saveAs from 'file-saver';
 
 @Component({
@@ -14,16 +14,18 @@ export class AppComponent implements AfterViewInit {
   title = 'app';
   imageUrl = null;
 
-  constructor(private service: BirdImageWikiService) {
+  constructor(private service: ImageWikiService) {
   }
 
   /**
-   * Method used to find an image of a desired bird
-   * @param birdName: the name of the bird
+   * Method used to find an image of a desired object
+   * @param name: the name of the object
    */
-  getImage(birdName: string): void {
+  getImage(name: string): void {
+    // reset the image url
+    this.imageUrl = null;
     // first request to find the image name in Wikipedia
-    this.service.getWikiImageName(birdName).subscribe(res => {
+    this.service.getWikiImageName(name).subscribe(res => {
       const firstKey = Object.keys(res.body.query.pages)[0];
       // second request to find the URL (where it is stored) of the image
       this.service.getWikiImageURL(res.body.query.pages[firstKey].pageimage).subscribe(image => {
@@ -33,7 +35,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getImage('falcon');
   }
 
   /**

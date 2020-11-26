@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BirdImageWikiService } from './bird-image-wiki.service';
+import { ImageWikiService } from './image-wiki.service';
 
-describe('BirdImageWikiService', () => {
-  let service: BirdImageWikiService;
+describe('ImageWikiService', () => {
+  let service: ImageWikiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BirdImageWikiService);
+    service = TestBed.inject(ImageWikiService);
   });
 
   it('should be created', () => {
