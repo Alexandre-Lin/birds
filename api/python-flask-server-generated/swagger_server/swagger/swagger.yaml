@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: API de classification de sons urbains
+  description: API de prédiction de la source d'un bruit provenant d'une ville
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/v1
+paths:
+  /sounds/prediction:
+    post:
+      summary: Renvoie une prédiction de la source du bruit
+      description: Renvoie la source détectée et le taux de confiance de la prédiction
+      operationId: sounds_prediction_post
+      requestBody:
+        description: Fichier audio du son
+        content:
+          audio/*:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        "200":
+          description: Retourne un objet json contenant la source prédite et son taux
+            de confiance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prediction'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    Prediction:
+      type: object
+      properties:
+        source:
+          type: string
+        rate:
+          type: number
+      example:
+        rate: 0.80082819046101150206595775671303272247314453125
+        source: source
+

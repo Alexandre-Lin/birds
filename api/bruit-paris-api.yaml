@@ -1,17 +1,17 @@
 openapi: 3.0.0
 info:
-    title: SOUND-BASED BIRD CLASSIFICATION API
-    description: API de prédiction de l'espèce d'un oiseau basé sur son chant
+    title: API de classification de sons urbains
+    description: API de prédiction de la source d'un bruit provenant d'une ville
     version: 1.0.0
 servers:
     - url: http://localhost:8080/v1
 paths:
-    /birds/prediction:
+    /sounds/prediction:
       post:
-        summary: Renvoie l'espèce de l'oiseau prédite
-        description: Renvoie l'espèce détectée, le taux de confiance de la prédiction
+        summary: Renvoie une prédiction de la source du bruit
+        description: Renvoie la source détectée et le taux de confiance de la prédiction
         requestBody:
-          description: Fichier audio du chant de l'oiseau
+          description: Fichier audio du son
           required: true
           content:
             audio/*:
@@ -20,7 +20,7 @@ paths:
                 format: binary
         responses:
             "200":
-                description: Retourne un objet json contenant l'espèce détectée, le taux de confiance de la prédiction
+                description: Retourne un objet json contenant la source prédite et son taux de confiance
                 content:
                     application/json:
                         schema:
@@ -30,7 +30,7 @@ components:
     Prediction:
       type: object
       properties:
-        specie:
+        source:
           type: string
         rate:
           type: number
