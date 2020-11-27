@@ -94,6 +94,7 @@ export class AppComponent implements AfterViewInit {
       if(item.type.startsWith('audio/')){
         item.progress = 0;
         item.prediction = false;
+        item.prediction_status = 0; // -1: error, 0: initial, 1: processing, 2: success
         this.files.push(item);
       }
     }
@@ -119,11 +120,14 @@ export class AppComponent implements AfterViewInit {
 
   soundRecognition(index: number): void {
     this.files[index].prediction = true;
+    this.files[index].prediction_status = 1;
     // service for asking API and retrieve image if possible
     this.apiService.predictApi(this.files[index]).subscribe((res: ApiPredictionResponse) => {
       if (!res) {
+        this.files[index].prediction_status = -1;
         return;
       }
+      this.files[index].prediction_status = 2;
       this.files[index].predictedObject = res.object;
       this.files[index].predictedRate = res.rate;
       // add image if found

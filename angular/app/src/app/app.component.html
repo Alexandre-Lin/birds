@@ -30,14 +30,19 @@
                  (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
-            <button class="btn-model" (click)="soundRecognition(i)">Run model</button>
-            <span class="prediction" *ngIf="file?.prediction">
-              <span>Predicted sound:</span>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0 || file?.prediction_status == 2">Run model</button>
+            <button class="btn-model" *ngIf="file?.prediction_status == 1" style="--btn-color: darkseagreen;"><div class="loader"></div></button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == -1" style="--btn-color: crimson;">Run model</button>
+            <span class="prediction" *ngIf="file?.prediction && file?.prediction_status != -1">
+              <span *ngIf="file?.prediction_status == 2">Predicted sound:</span>
               <span *ngIf="file?.predictedObject">{{file.predictedObject}}</span>
               <span *ngIf="file?.imageUrl" class="predicted-img">
                 <img [src]="file.imageUrl" [alt]="'No image found'"/>
               </span>
               <span *ngIf="file?.predictedRate">(with {{file.predictedRate}}% of accuracy)</span>
+            </span>
+            <span class="prediction" *ngIf="file?.prediction && file?.prediction_status == -1">
+              <span>An error occured, please try again.</span>
             </span>
           </div>
         </div>
