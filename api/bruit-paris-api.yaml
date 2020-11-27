@@ -6,6 +6,16 @@ info:
 servers:
     - url: http://localhost:8080/v1
 paths:
+    /test:
+      get:
+        summary: test d'un get sur l'API
+        responses:
+            "200":
+                description: Retourne une string
+                content:
+                  application/json:
+                        schema:
+                            type: string
     /sounds/prediction:
       post:
         summary: Renvoie une prédiction de la source du bruit

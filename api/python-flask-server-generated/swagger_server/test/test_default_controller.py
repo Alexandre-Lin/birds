@@ -26,6 +26,17 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_test_get(self):
+        """Test case for test_get
+
+        test d'un get sur l'API
+        """
+        response = self.client.open(
+            '/v1/test',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
 
 if __name__ == '__main__':
     import unittest

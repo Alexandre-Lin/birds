@@ -18,3 +18,14 @@ def sounds_prediction_post(body):  # noqa: E501
     if connexion.request.is_json:
         body = Object.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
+
+
+def test_get():  # noqa: E501
+    """test d&#x27;un get sur l&#x27;API
+
+     # noqa: E501
+
+
+    :rtype: str
+    """
+    return 'do some magic!'
