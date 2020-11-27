@@ -5,7 +5,7 @@
       <div class="upload-area">
         <h2>Upload your audio file:</h2>
         <div class="container" appDnd (fileDropped)="onFileDropped($event)">
-          <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)"/>
+          <input type="file" accept="audio/*" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)"/>
           <img class="upload-img" src="assets/images/dnd/ic-upload-file.svg" alt="">
           <h3>Drag and drop file here</h3>
           <h3>or</h3>
@@ -16,7 +16,7 @@
       <div class="files-list">
         <div class="single-file" *ngFor="let file of files; let i = index">
           <div class="file-info">
-            <img class="music" src="assets/images/dnd/music-file.svg" alt="file">
+            <img class="music" src="assets/images/dnd/wave-file.svg" alt="music-icon">
             <div class="info">
               <h4 class="name">
                 {{ file?.name }}
@@ -26,18 +26,18 @@
               </p>
               <app-progress [progress]="file?.progress"></app-progress>
             </div>
-            <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file"
+            <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="delete-file"
                  (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
             <button class="btn-model" (click)="soundRecognition(i)">Run model</button>
             <span class="prediction" *ngIf="file?.prediction">
-              Prediction:
+              <span>Predicted sound:</span>
               <span *ngIf="file?.predictedObject">{{file.predictedObject}}</span>
-              <span *ngIf="file?.predictedRate"> ({{file.predictedRate}} %) </span>
-              <span *ngIf="file?.imageUrl">
-                <img [src]="file.imageUrl" style="max-width: 50px; max-height: 50px" [alt]="'No image found'"/>
+              <span *ngIf="file?.imageUrl" class="predicted-img">
+                <img [src]="file.imageUrl" [alt]="'No image found'"/>
               </span>
+              <span *ngIf="file?.predictedRate">(with {{file.predictedRate}}% of accuracy)</span>
             </span>
           </div>
         </div>

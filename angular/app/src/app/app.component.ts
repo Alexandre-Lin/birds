@@ -91,9 +91,11 @@ export class AppComponent implements AfterViewInit {
    */
   prepareFilesList(files: Array<any>): void {
     for (const item of files) {
-      item.progress = 0;
-      item.prediction = false;
-      this.files.push(item);
+      if(item.type.startsWith('audio/')){
+        item.progress = 0;
+        item.prediction = false;
+        this.files.push(item);
+      }
     }
     this.fileDropEl.nativeElement.value = '';
     this.uploadFiles(0);
