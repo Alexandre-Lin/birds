@@ -82,6 +82,10 @@ html, body {
     }
   }
 
+  #fileDropRef:hover{
+    cursor: pointer;
+  }
+
   .fileover {
     animation: shake 1s;
     animation-iteration-count: infinite;
@@ -131,7 +135,7 @@ html, body {
     .single-file {
       display: inline-flex;
       align-items: center;
-      margin-bottom: 1 rm;
+      margin-bottom: 1rm;
       width: 100%;
       margin-bottom: 20px;
     }
@@ -365,6 +369,16 @@ html, body {
   width: 10px;
   height: 10px;
   animation: spin 2s linear infinite;
+}
+
+.loading{
+  min-width: 127.7px;
+  height: 44.5px !important;
+
+  .loader{
+    position: relative;
+    left: 20px;
+  }
 }
 
 @keyframes spin {

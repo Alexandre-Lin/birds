@@ -30,8 +30,9 @@
                  (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
-            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0 || file?.prediction_status == 2">Run model</button>
-            <button class="btn-model" *ngIf="file?.prediction_status == 1" style="--btn-color: darkseagreen;"><div class="loader"></div></button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0">Run model</button>
+            <button class="btn-model loading" *ngIf="file?.prediction_status == 1" style="--btn-color: aqua;"><div class="loader"></div></button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 2" style="--btn-color: lawngreen;">Run model</button>
             <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == -1" style="--btn-color: crimson;">Run model</button>
             <span class="prediction" *ngIf="file?.prediction && file?.prediction_status != -1">
               <span *ngIf="file?.prediction_status == 2">Predicted sound:</span>
