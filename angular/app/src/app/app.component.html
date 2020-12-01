@@ -5,8 +5,8 @@
       <div class="upload-area">
         <h2>Upload your audio file:</h2>
         <div class="container" appDnd (fileDropped)="onFileDropped($event)">
-          <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)" />
-          <img src="assets/images/dnd/ic-upload-file.svg" alt="">
+          <input type="file" accept="audio/*" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)"/>
+          <img class="upload-img" src="assets/images/dnd/ic-upload-file.svg" alt="">
           <h3>Drag and drop file here</h3>
           <h3>or</h3>
           <label for="fileDropRef">Browse for file</label>
@@ -16,7 +16,7 @@
       <div class="files-list">
         <div class="single-file" *ngFor="let file of files; let i = index">
           <div class="file-info">
-            <img src="assets/images/dnd/ic-file.svg" width="45px" alt="file">
+            <img class="music" src="assets/images/dnd/wave-file.svg" alt="music-icon">
             <div class="info">
               <h4 class="name">
                 {{ file?.name }}
@@ -26,11 +26,25 @@
               </p>
               <app-progress [progress]="file?.progress"></app-progress>
             </div>
-            <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="file" (click)="deleteFile(i)">
+            <img src="assets/images/dnd/ic-delete-file.svg" class="delete" width="20px" alt="delete-file"
+                 (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
-            <button class="btn-model">Run model</button>
-            <span class="prediction">Prediction</span>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0">Run model</button>
+            <button class="btn-model loading" *ngIf="file?.prediction_status == 1" style="--btn-color: aqua;"><div class="loader"></div></button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 2" style="--btn-color: lawngreen;">Run model</button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == -1" style="--btn-color: crimson;">Run model</button>
+            <span class="prediction" *ngIf="file?.prediction && file?.prediction_status != -1">
+              <span *ngIf="file?.prediction_status == 2">Predicted sound:</span>
+              <span *ngIf="file?.predictedObject">{{file.predictedObject}}</span>
+              <span *ngIf="file?.imageUrl" class="predicted-img">
+                <img [src]="file.imageUrl" [alt]="'No image found'"/>
+              </span>
+              <span *ngIf="file?.predictedRate">(with {{file.predictedRate}}% of accuracy)</span>
+            </span>
+            <span class="prediction" *ngIf="file?.prediction && file?.prediction_status == -1">
+              <span>An error occured, please try again.</span>
+            </span>
           </div>
         </div>
       </div>
@@ -41,7 +55,9 @@
       <h1>Bruit Paris</h1>
     </div>
     <div>
-      <p>This is a machine learning service dedicated to recognize sounds and tell you what it is based on an audio file.</p>
+      <p class="abstract">This is a machine learning service dedicated to recognize sounds and tell you what it is based on an audio
+        file.</p>
+      <p class="credits">Credits: Guilhem MAILLEBUAU, Steve MAHOT, Alexandre LIN, Raphael LAURENT, Juliette NGUYEN and Augustin LE</p>
     </div>
   </div>
 </div>

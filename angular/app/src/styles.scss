@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { padding: 0; margin: 0;}
+html, body {
+  padding: 0;
+  margin: 0;
+}
 
 @font-face {
   font-family: "Roboto Regular";
@@ -11,30 +14,34 @@ html, body { padding: 0; margin: 0;}
   src: url('./assets/font/Roboto-Light.ttf') format("truetype");
 }
 
-#main-container{
+#main-container {
   width: 100%;
-  height: 100vh;
+  /*height: 100vh;*/
+  height: 100%;
   display: inline-flex;
   font-family: "Roboto Regular";
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
-#l-panel{
+#l-panel {
+  min-height: 100%;
+  height: max-content;
   width: 60%;
   /*box-shadow: 10px 0px 37px 80px #175fc6;*/
   box-shadow: 0px 0px 37px 45px #ffffff;
   z-index: 1;
 }
 
-#l-panel > div{
+#l-panel > div {
   padding: 60px;
+  padding-top: 30px;
 }
 
-#l-panel{
+#l-panel {
   .container {
     width: 450px;
-    height: 200px;
-    padding: 2rem;
+    height: 155px;
+    padding: 0.7rem;
     text-align: center;
     border: dashed 1px #979797;
     position: relative;
@@ -60,10 +67,23 @@ html, body { padding: 0; margin: 0;}
     }
 
     h3 {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       color: #38424c;
+      margin-bottom: 5px;
     }
+
+    h3:last-of-type {
+      margin-bottom: 15px;
+    }
+
+    .upload-img {
+      width: 42px;
+    }
+  }
+
+  #fileDropRef:hover{
+    cursor: pointer;
   }
 
   .fileover {
@@ -73,17 +93,46 @@ html, body { padding: 0; margin: 0;}
 
   .files-list {
     margin-top: 1.5rem;
+    overflow: auto;
+    /*height: 70vh;*/
+    width: 108%;
 
-    .recognition-module{
-      margin-right: 20px;
+    .recognition-module {
       margin-left: 20px;
+      display: flex;
     }
 
-    .prediction{
-      padding-left: 50px;
+    .prediction {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+
+      img{
+        max-height: 67px;
+        object-fit: contain;
+        border-radius: 5px;
+
+        &:hover {
+          transform: scale(3);
+          position: fixed;
+        }
+      }
+
+      span{
+        font-weight: bold;
+        margin: 0px 5px 0px 5px;
+      }
+
+      span:nth-child(1){
+        font-weight: normal;
+      }
+
+      span:nth-child(2){
+        text-transform: uppercase;
+      }
     }
 
-    .single-file{
+    .single-file {
       display: inline-flex;
       align-items: center;
       margin-bottom: 1rm;
@@ -92,12 +141,17 @@ html, body { padding: 0; margin: 0;}
     }
 
     .single-file .file-info {
-      display: flex;
       padding: 0.5rem;
       justify-content: space-between;
       align-items: center;
       border: dashed 1px #979797;
-      width: 50%;
+      width: 34%;
+      border-radius: 12px;
+
+      img.music {
+        width: 32px;
+        margin-right: 9px;
+      }
 
       img.delete {
         margin-left: 0.5rem;
@@ -112,6 +166,7 @@ html, body { padding: 0; margin: 0;}
         font-weight: 500;
         color: #353f4a;
         margin: 0;
+        overflow-wrap: anywhere;
       }
 
       .size {
@@ -176,40 +231,52 @@ html, body { padding: 0; margin: 0;}
   }
 }
 
-.upload-area{
+.upload-area {
   text-align: center;
 }
 
-#r-panel{
+#r-panel {
   width: 40%;
   /* background-color: #1976d3; */
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
-  ),url("./assets/images/paris.jpg");
+  ), url("./assets/images/paris.jpg");
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  position: fixed;
+  right: 0;
+  height: 100%;
+
+  h1 {
+    font-size: 3em;
+    margin-bottom: 50px;
+  }
+
+  .abstract{
+    font-family: "Roboto Light";
+    font-size: 1.5em;
+    line-height: 30px;
+  }
+
+  .credits{
+    font-size: 14px;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 0;
+    padding: 0px 70px 0px 70px;
+  }
 }
 
-#r-panel > div{
+#r-panel > div {
   padding: 0px 20px 0px 120px;
   color: #ffffff;
   font-size: 1.3em;
 }
 
-#r-panel p{
-  font-family: "Roboto Light";
-  font-size: 1.2em;
-}
-
-#r-panel h1{
-  font-size: 3em;
-  margin-bottom: 30px;
-}
-
-#logo-esilv{
+#logo-esilv {
   height: 70px;
   width: 70px;
   position: absolute;
@@ -232,6 +299,7 @@ html, body { padding: 0; margin: 0;}
   cursor: pointer;
   filter: drop-shadow(0 2px 8px rgba(#275efe, 0.32));
   transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1); //ease-out-cubic
+  margin: auto;
 
   &::before {
     position: absolute;
@@ -244,6 +312,10 @@ html, body { padding: 0; margin: 0;}
     background: var(--btn-color);
     border-radius: 24px;
     transition: 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  &:hover {
+    --btn-color: #275efeba;
   }
 
   .btn-text,
@@ -290,6 +362,36 @@ html, body { padding: 0; margin: 0;}
   }
 }
 
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  animation: spin 2s linear infinite;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.loading{
+  min-width: 127.7px;
+  height: 44.5px !important;
+
+  .loader{
+    position: relative;
+    left: 20px;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

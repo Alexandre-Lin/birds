@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class BirdImageWikiService {
+export class ImageWikiService {
 
   private WIKI_GET_NAME_IMAGE_REQUEST =
     'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages&continue=%7C%7C&origin=*&titles=';
@@ -16,20 +16,20 @@ export class BirdImageWikiService {
   }
 
   /**
-   * To get the name of the image of the desired bird by using Wikipedia
-   * @param birdName: the name of the bird
+   * To get the name of the image of the desired object by using Wikipedia
+   * @param name: the name of the object
    */
-  getWikiImageName(birdName: string): Observable<any> {
-    return this.http.get<any>(this.WIKI_GET_NAME_IMAGE_REQUEST + birdName, {observe: 'response', responseType: 'json'});
+  getWikiImageName(name: string): Observable<any> {
+    return this.http.get<any>(this.WIKI_GET_NAME_IMAGE_REQUEST + name, {observe: 'response', responseType: 'json'});
   }
 
   /**
-   * To get the URL of the bird image
-   * @param birdImageName: name of the bird image
+   * To get the URL of the image
+   * @param imageName: name of the image
    */
-  getWikiImageURL(birdImageName: string): Observable<any> {
+  getWikiImageURL(imageName: string): Observable<any> {
     return this.http.get<any>(
-      this.WIKI_GET_URL_IMAGE_REQUEST + birdImageName + this.WIKI_GET_URL_IMAGE_REQUEST_PARAMS,
+      this.WIKI_GET_URL_IMAGE_REQUEST + imageName + this.WIKI_GET_URL_IMAGE_REQUEST_PARAMS,
       {observe: 'response'});
   }
 }
