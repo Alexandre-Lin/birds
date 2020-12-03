@@ -6,6 +6,7 @@ from flask import json
 from six import BytesIO
 
 from swagger_server.models.prediction import Prediction  # noqa: E501
+from swagger_server.models.sound import Sound  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
@@ -17,12 +18,12 @@ class TestDefaultController(BaseTestCase):
 
         Renvoie une prédiction de la source du bruit
         """
-        body = Object()
+        body = Sound()
         response = self.client.open(
             '/v1/sounds/prediction',
             method='POST',
             data=json.dumps(body),
-            content_type='audio/*')
+            content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

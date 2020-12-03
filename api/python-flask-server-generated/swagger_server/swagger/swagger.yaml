@@ -27,10 +27,9 @@ paths:
       requestBody:
         description: Fichier audio du son
         content:
-          audio/*:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: '#/components/schemas/Sound'
         required: true
       responses:
         "200":
@@ -53,4 +52,9 @@ components:
       example:
         rate: 0.80082819046101150206595775671303272247314453125
         source: source
+    Sound:
+      type: object
+      properties:
+        binary:
+          type: string
 

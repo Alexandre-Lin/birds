@@ -24,10 +24,9 @@ paths:
           description: Fichier audio du son
           required: true
           content:
-            audio/*:
-              schema:
-                type: string
-                format: binary
+            application/json:
+                        schema:
+                            $ref: "#/components/schemas/Sound"
         responses:
             "200":
                 description: Retourne un objet json contenant la source prédite et son taux de confiance
@@ -44,3 +43,8 @@ components:
           type: string
         rate:
           type: number
+    Sound:
+      type: object
+      properties:
+        binary:
+          type: string
