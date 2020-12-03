@@ -10,6 +10,7 @@ import sys
 sys.path.insert(0, '../../scripts')
 import os
 from urbansound8k_prediction import predict
+import json
 
 def sounds_prediction_post(body):  # noqa: E501
     """Renvoie une prédiction de la source du bruit
@@ -26,10 +27,17 @@ def sounds_prediction_post(body):  # noqa: E501
         saveWavFile(body.binary)
         prediction = predict("../data/decoded_wav.wav")
         print(prediction)
+        rate = max(prediction.values())
+        source = [k for k, v in prediction.items() if v == rate][0]
         deleteWavFile()
+        print("SOURCE :", source)
+        print("RATE :", type(rate))
+        result = Prediction(source, rate)
+        print("RES :", result)
+        jsonObjetReturn = json.dumps(str(result))
     else: 
         print("body not json")
-    return 'do some magic!'
+    return jsonObjetReturn
 
 
 def test_get():  # noqa: E501

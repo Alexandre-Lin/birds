@@ -40,13 +40,16 @@ model = keras.models.load_model(model_path)
 
 def extract_features(file_name):
     try:
-        audio, sample_rate = librosa.load("C:/Users/admin/Documents/Python_for_data_analysis/bruit_paris/data/decoded_wav.wav", res_type="kaiser_fast")
+        print("file_name", file_name)
+        print("work_dir", Path().cwd())
+        audio, sample_rate = librosa.load(file_name, res_type="kaiser_fast")
         print("librosa.load()")
         mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
         print("librosa.feature.mfcc()")
         mfccsscaled = np.mean(mfccs.T, axis=0)
         print("mean()")
     except Exception as e:
+        print("exception", e)
         print("Error encountered while parsing file: ", file_name)
         return None
     return mfccsscaled
