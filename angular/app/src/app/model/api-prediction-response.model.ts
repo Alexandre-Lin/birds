@@ -2,13 +2,13 @@
  * Response class for the prediction API
  */
 export interface IApiPredictionResponse {
-  object: string;
+  source: string;
   rate: number;
 }
 
 export class ApiPredictionResponse implements IApiPredictionResponse {
   constructor(
-    public object: string,
+    public source: string,
     public rate: number
   ) {
   }

@@ -164,7 +164,7 @@ export class AppComponent implements AfterViewInit {
           return;
         }
         this.files[index].prediction_status = 2;
-        this.files[index].predictedObject = TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(res.object)];
+        this.files[index].predictedObject = TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(res.source)];
         this.files[index].predictedRate = res.rate;
         // add image if found
         this.getImage(this.files[index].predictedObject, index);
