@@ -17,8 +17,8 @@ export class ApiPredictionService {
    * To launch a prediction
    * @param file: the audio file to predict
    */
-  predictApi(file: string | ArrayBuffer): Observable<ApiPredictionResponse> {
-    return this.http.post<ApiPredictionResponse>(URL_API_PREDICTION, {binary: file}, {
+  predictApi(file: string | ArrayBuffer): Observable<string> {
+    return this.http.post<string>(URL_API_PREDICTION, {binary: file}, {
       reportProgress: true,
       responseType: 'json',
       headers: new HttpHeaders({

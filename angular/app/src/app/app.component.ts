@@ -158,16 +158,20 @@ export class AppComponent implements AfterViewInit {
         fileStringBase64 = fileStringBase64.split(',')[1];
       }
       // service for asking API and retrieve image if possible
-      this.apiService.predictApi(fileStringBase64).subscribe((res: ApiPredictionResponse) => {
+      this.apiService.predictApi(fileStringBase64).subscribe((res: string) => {
         if (!res) {
           this.files[index].prediction_status = -1;
           return;
         }
+        res = res.replace(/'/g,'"');
+        res = res.substring(1,res.length-1);
+        let jsonObj = JSON.parse(res);
+      
         this.files[index].prediction_status = 2;
-        this.files[index].predictedObject = TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(res.source)];
-        this.files[index].predictedRate = res.rate;
+        this.files[index].predictedObject = jsonObj.source;
+        this.files[index].predictedRate = jsonObj.rate * 100;
         // add image if found
-        this.getImage(this.files[index].predictedObject, index);
+        this.getImage( TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(jsonObj.source)], index);
       });
     };
   }
