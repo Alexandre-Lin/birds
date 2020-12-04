@@ -3,6 +3,33 @@ import {ImageWikiService} from './services/image-wiki.service';
 import {ApiPredictionResponse} from './model/api-prediction-response.model';
 import {ApiPredictionService} from './services/api-prediction.service';
 
+// list of predicted responses that need to change its label to find an image on Wikipedia
+const PREDICTED_RESPONSE = [
+  'air_conditioner',
+  'car_horn',
+  'children_playing',
+  'dog_bark',
+  'drilling',
+  'engine_idling',
+  'gun_shot',
+  'jackhammer',
+  'siren',
+  'street_music'];
+
+// list of transformed label for Wikipedia image searches
+const TRANSFORMED_RESPONSE = [
+  'air conditioning',
+  'vehicle horn',
+  'playground',
+  'bark (sound)',
+  'drill',
+  'drilling',
+  'gunshot',
+  'jackhammer',
+  'siren (alarm)',
+  'street performance'
+];
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -91,7 +118,7 @@ export class AppComponent implements AfterViewInit {
    */
   prepareFilesList(files: Array<any>): void {
     for (const item of files) {
-      if (item.type.startsWith('audio/')){
+      if (item.type.startsWith('audio/')) {
         item.progress = 0;
         item.prediction = false;
         item.prediction_status = 0; // -1: error, 0: initial, 1: processing, 2: success
@@ -137,7 +164,7 @@ export class AppComponent implements AfterViewInit {
           return;
         }
         this.files[index].prediction_status = 2;
-        this.files[index].predictedObject = res.object;
+        this.files[index].predictedObject = TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(res.object)];
         this.files[index].predictedRate = res.rate;
         // add image if found
         this.getImage(res.object, index);
