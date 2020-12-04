@@ -91,7 +91,7 @@ export class AppComponent implements AfterViewInit {
    */
   prepareFilesList(files: Array<any>): void {
     for (const item of files) {
-      if(item.type.startsWith('audio/')){
+      if (item.type.startsWith('audio/')){
         item.progress = 0;
         item.prediction = false;
         item.prediction_status = 0; // -1: error, 0: initial, 1: processing, 2: success
@@ -121,17 +121,27 @@ export class AppComponent implements AfterViewInit {
   soundRecognition(index: number): void {
     this.files[index].prediction = true;
     this.files[index].prediction_status = 1;
-    // service for asking API and retrieve image if possible
-    this.apiService.predictApi(this.files[index]).subscribe((res: ApiPredictionResponse) => {
-      if (!res) {
-        this.files[index].prediction_status = -1;
-        return;
+    // transforming file into base64 file for API
+    const reader = new FileReader();
+    reader.readAsDataURL(this.files[index]);
+    let fileStringBase64: string | ArrayBuffer = '';
+    reader.onload = () => {
+      fileStringBase64 = reader.result;
+      if (typeof fileStringBase64 === 'string') {
+        fileStringBase64 = fileStringBase64.split(',')[1];
       }
-      this.files[index].prediction_status = 2;
-      this.files[index].predictedObject = res.object;
-      this.files[index].predictedRate = res.rate;
-      // add image if found
-      this.getImage(res.object, index);
-    });
+      // service for asking API and retrieve image if possible
+      this.apiService.predictApi(fileStringBase64).subscribe((res: ApiPredictionResponse) => {
+        if (!res) {
+          this.files[index].prediction_status = -1;
+          return;
+        }
+        this.files[index].prediction_status = 2;
+        this.files[index].predictedObject = res.object;
+        this.files[index].predictedRate = res.rate;
+        // add image if found
+        this.getImage(res.object, index);
+      });
+    };
   }
 }
