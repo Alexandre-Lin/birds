@@ -1,11 +1,13 @@
 <div id="main-container">
   <img id="logo-esilv" src="./assets/images/logo_esilv.png" alt="Logo ESILV">
-  <div id="l-panel">
+  <!-- main interface -->
+  <div id="l-panel" *ngIf="mainSelected">
     <div>
       <div class="upload-area">
         <h2>Upload your audio file:</h2>
         <div class="container" appDnd (fileDropped)="onFileDropped($event)">
-          <input type="file" accept="audio/*" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event.target.files)"/>
+          <input type="file" accept="audio/*" #fileDropRef id="fileDropRef" multiple
+                 (change)="fileBrowseHandler($event.target.files)"/>
           <img class="upload-img" src="assets/images/dnd/ic-upload-file.svg" alt="">
           <h3>Drag and drop file here</h3>
           <h3>or</h3>
@@ -30,10 +32,18 @@
                  (click)="deleteFile(i)">
           </div>
           <div class="recognition-module" *ngIf="file?.progress == 100">
-            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0">Run model</button>
-            <button class="btn-model loading" *ngIf="file?.prediction_status == 1" style="--btn-color: aqua;"><div class="loader"></div></button>
-            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 2" style="--btn-color: lawngreen;">Run model</button>
-            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == -1" style="--btn-color: crimson;">Run model</button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 0">
+              Run model
+            </button>
+            <button class="btn-model loading" *ngIf="file?.prediction_status == 1" style="--btn-color: aqua;">
+              <div class="loader"></div>
+            </button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == 2"
+                    style="--btn-color: lawngreen;">Run model
+            </button>
+            <button class="btn-model" color="accent" (click)="soundRecognition(i)" *ngIf="file?.prediction_status == -1"
+                    style="--btn-color: crimson;">Run model
+            </button>
             <span class="prediction" *ngIf="file?.prediction && file?.prediction_status != -1">
               <span *ngIf="file?.prediction_status == 2">Predicted sound:</span>
               <span *ngIf="file?.predictedObject">{{file.predictedObject}}</span>
@@ -47,17 +57,38 @@
             </span>
           </div>
         </div>
+        <div style="display: flex; justify-content: center; width: 92%">
+          <button mat-button style="background-color: red; color: white" *ngIf="mainSelected"
+                  (click)="switchInterface()">View Predictions
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- prediction list interface -->
+  <div *ngIf="!mainSelected" style="display: flex; flex-direction: column; align-items: center; width: 70%">
+    <h1>
+      Prediction list
+    </h1>
+    <div *ngFor="let prediction of predictionList" style="display: flex; flex-direction: column; align-items: center">
+        {{prediction}}
+    </div>
+    <button mat-button *ngIf="!mainSelected" style="background-color: red; color: white" (click)="switchInterface()">
+      Main
+    </button>
+  </div>
+
   <div id="r-panel">
     <div>
       <h1>Bruit Paris</h1>
     </div>
     <div>
-      <p class="abstract">This is a machine learning service dedicated to recognize sounds and tell you what it is based on an audio
+      <p class="abstract">This is a machine learning service dedicated to recognize sounds and tell you what it is based
+        on an audio
         file.</p>
-      <p class="credits">Credits: Guilhem MAILLEBUAU, Steve MAHOT, Alexandre LIN, Raphael LAURENT, Juliette NGUYEN and Augustin LE</p>
+      <p class="credits">Credits: Guilhem MAILLEBUAU, Steve MAHOT, Alexandre LIN, Raphael LAURENT, Juliette NGUYEN and
+        Augustin LE</p>
     </div>
   </div>
 </div>

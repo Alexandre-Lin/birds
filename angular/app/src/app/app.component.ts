@@ -43,6 +43,9 @@ export class AppComponent implements AfterViewInit {
 
   title = 'app';
 
+  mainSelected = true;
+  predictionList = [];
+
   constructor(private imageService: ImageWikiService, private apiService: ApiPredictionService) {
   }
 
@@ -171,8 +174,7 @@ export class AppComponent implements AfterViewInit {
         if (jsonObj.rate < 0.6) {
           this.files[index].predictedObject = 'UNKNOWN';
           this.getImage(TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf('UNKNOWN')], index);
-        }
-        else {
+        } else {
           this.files[index].predictedObject = jsonObj.source;
           // add image if found
           this.getImage(TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(jsonObj.source)], index);
@@ -181,5 +183,18 @@ export class AppComponent implements AfterViewInit {
         this.files[index].predictedRate = jsonObj.rate * 100;
       });
     };
+  }
+
+  /**
+   * To switch interface
+   */
+  switchInterface(): void {
+    this.mainSelected = !this.mainSelected;
+    if (!this.mainSelected) {
+      this.predictionList = [];
+      this.apiService.getPredictionsList().subscribe(predictions => {
+        this.predictionList = predictions.split('\n');
+      });
+    }
   }
 }

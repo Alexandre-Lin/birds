@@ -11,6 +11,7 @@ sys.path.insert(0, '../../scripts')
 import os
 from urbansound8k_prediction import predict
 import json
+import sqlite3
 
 def sounds_prediction_post(body):  # noqa: E501
     """Renvoie une prédiction de la source du bruit
@@ -35,20 +36,31 @@ def sounds_prediction_post(body):  # noqa: E501
         result = Prediction(source, rate)
         print("RES :", result)
         jsonObjetReturn = json.dumps(str(result))
+        ## ajoute la prédiction dans la database
+        conn = sqlite3.connect('predictions.db')
+        c= conn.cursor()
+        c.execute("INSERT INTO predictions VALUES (?,?)",(source,float(rate)))
+        conn.commit()
+        conn.close()
+        print("prediction saved !!")
     else: 
         print("body not json")
     return jsonObjetReturn
 
 
 def test_get():  # noqa: E501
-    """test d&#x27;un get sur l&#x27;API
-
-     # noqa: E501
-
-
-    :rtype: str
+    """ renvoie la liste des predictions sauvegardes
     """
-    return 'do some magic!'
+    conn = sqlite3.connect('predictions.db')
+    c= conn.cursor()
+    predictions = ""
+    for row in c.execute("SELECT * FROM predictions order by source"):
+        if (row[1] * 100 < 60):
+            predictions = predictions + "Prediction : Unknown" +" Rate: "+ str(row[1]*100) + "%"+  ' \n'
+        else:
+            predictions = predictions + "Prediction : " + row[0] +" Rate: "+ str(row[1]*100) + "%"+  ' \n'
+    conn.close()
+    return predictions
 
 def saveWavFile(base64_sound):
     base64_wav_bytes = base64_sound.encode('utf-8')
