@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {ImageWikiService} from './services/image-wiki.service';
-import {ApiPredictionResponse} from './model/api-prediction-response.model';
 import {ApiPredictionService} from './services/api-prediction.service';
 
 // list of predicted responses that need to change its label to find an image on Wikipedia
@@ -14,7 +13,8 @@ const PREDICTED_RESPONSE = [
   'gun_shot',
   'jackhammer',
   'siren',
-  'street_music'];
+  'street_music',
+  'UNKNOWN'];
 
 // list of transformed label for Wikipedia image searches
 const TRANSFORMED_RESPONSE = [
@@ -27,7 +27,8 @@ const TRANSFORMED_RESPONSE = [
   'gunshot',
   'jackhammer',
   'siren (alarm)',
-  'street performance'
+  'street performance',
+  'doubt'
 ];
 
 @Component({
@@ -163,15 +164,21 @@ export class AppComponent implements AfterViewInit {
           this.files[index].prediction_status = -1;
           return;
         }
-        res = res.replace(/'/g,'"');
-        res = res.substring(1,res.length-1);
-        let jsonObj = JSON.parse(res);
-      
+        res = res.replace(/'/g, '"');
+        res = res.substring(1, res.length - 1);
+        const jsonObj = JSON.parse(res);
+        // si rate < 60%
+        if (jsonObj.rate < 0.6) {
+          this.files[index].predictedObject = 'UNKNOWN';
+          this.getImage(TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf('UNKNOWN')], index);
+        }
+        else {
+          this.files[index].predictedObject = jsonObj.source;
+          // add image if found
+          this.getImage(TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(jsonObj.source)], index);
+        }
         this.files[index].prediction_status = 2;
-        this.files[index].predictedObject = jsonObj.source;
         this.files[index].predictedRate = jsonObj.rate * 100;
-        // add image if found
-        this.getImage( TRANSFORMED_RESPONSE[PREDICTED_RESPONSE.indexOf(jsonObj.source)], index);
       });
     };
   }
